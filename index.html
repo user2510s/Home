@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/styles/styles.css">
+    <title>HOME</title>
+</head>
+
+<body>
+    <img class="background" src="./src/images/background.png">
+
+    <div class="content">
+
+        <form onsubmit="return searchGoogle()">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Pesquise no Google ou digite uma URL">
+            </div>
+        </form>
+        
+        <div class="shortcuts">
+
+            <div class="shortcut" onclick="window.open('https://www.youtube.com', '_blank')">
+                <div class="shortcut-icon">
+                    <img src="https://www.svgrepo.com/show/13671/youtube.svg">
+                </div>
+                <span>YouTube</span>
+            </div>
+            <div class="shortcut" onclick="window.open('https://music.youtube.com/', '_blank')">
+                <div class="shortcut-icon">
+                    <img src="src/images/youtube-music-song-multimedia-audio-svgrepo-com.svg">
+                </div>
+                <span>YouTube Music</span>
+            </div>
+
+            <div class="shortcut" onclick="window.open('https://github.com/user2510s', '_blank')">
+                <div class="shortcut-icon">
+                    <img src="src/images/github.png">
+                </div>
+                <span>GitHub</span>
+            </div>
+
+            <div class="shortcut" onclick="window.open('https://chat.openai.com', '_blank')">
+                <div class="shortcut-icon">
+                    <img src="src/images/chatgpt.png">
+                </div>
+                <span>ChatGPT</span>
+            </div>
+
+            <div class="shortcut" onclick="window.open('https://www.google.com', '_blank')">
+                <div class="shortcut-icon">
+                    <img src="src/images/google.png">
+                </div>
+                <span>Google</span>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="widgets-container">
+
+        <div class="clock">
+            <div class="clock-time" id="clockTime">00:00</div>
+            <div class="clock-date" id="clockDate">Carregando...</div>
+        </div>
+
+        <div class="weather" id="weatherBox">
+            <h3>Clima</h3>
+            <div class="weather-info" id="weatherInfo">Carregando...</div>
+        </div>
+
+        <div class="todo-box">
+            <h3>Minhas Tarefas</h3>
+
+            <input type="text" id="todoInput" placeholder="Nova tarefa...">
+
+            <div id="todoList"></div>
+        </div>
+        
+
+    </div>
+
+    <script src="src/scripts/script.js"></script>
+
+</body>
+
+</html>
