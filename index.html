@@ -6,19 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles/styles.css">
     <title>HOME</title>
+    <link rel="shortcut icon" href="src/images/logo.png" type="image/x-icon">
 </head>
 
 <body>
-    <img class="background" src="./src/images/background.png">
+    <img class="background" src="./src/images/wallhaven-yqqvv7.jpg">
 
     <div class="content">
 
         <form onsubmit="return searchGoogle()">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Pesquise no Google ou digite uma URL">
+                <input type="text" id="searchInput" placeholder="Pesquise no Google ou digite uma URL"
+                    autocomplete="off">
             </div>
         </form>
-        
+
         <div class="shortcuts">
 
             <div class="shortcut" onclick="window.open('https://www.youtube.com', '_blank')">
@@ -54,6 +56,12 @@
                 </div>
                 <span>Google</span>
             </div>
+            <div class="shortcut" onclick="window.open('https://web.whatsapp.com/', '_blank')">
+                <div class="shortcut-icon">
+                    <img src="src/images/whatsapp.png">
+                </div>
+                <span>Whatsapp</span>
+            </div>
 
         </div>
 
@@ -77,11 +85,31 @@
 
             <div id="todoList"></div>
         </div>
-        
+
 
     </div>
+    <div class="autocomplete-box" id="autocompleteBox"></div>
 
+    <div id="recentHistory" class="recent-history" id="recentHistory"></div>
+
+    <div id="overlay" class="overlay">
+        <div class="popup">
+            <h2>Autenticação necessária</h2>
+            <input type="password" id="passwordInput" placeholder="Digite a senha">
+            <button id="passwordBtn">Entrar</button>
+            <p id="passwordError" class="error"></p>
+        </div>
+    </div>
+
+
+
+    <div id="liveIconsContainer"></div>
+
+
+
+    <script src="src/scripts/tw.js"></script>
     <script src="src/scripts/script.js"></script>
+    <script src="src/scripts/security.js"></script>
 
 </body>
 
