@@ -1,9 +1,63 @@
+import weatherWidget from "./weather.js";
+import clock from "./clock/clock.js";
+import historyModule from "./history.js";
+import search from "./search.js";
+import shortcut from "./shortcut.js";
+
+const history = historyModule(); // retorna { addToHistory }
+
+const form = document.getElementById("searchForm");
+
 const searchInput = document.getElementById("searchInput");
 const autocompleteBox = document.getElementById("autocompleteBox");
 const recentHistory = document.getElementById("recentHistory");
 
 let currentIndex = -1; // para navegação por teclas
 let currentItems = []; // itens renderizados
+
+function verifyWallpaper(){
+
+const wallpapers = {
+  1: "https://w.wallhaven.cc/full/w5/wallhaven-w5eq57.jpg",
+  2: "https://w.wallhaven.cc/full/k8/wallhaven-k881zd.jpg",
+  3: "https://w.wallhaven.cc/full/w5/wallhaven-w557rr.jpg",
+  4: "https://w.wallhaven.cc/full/vp/wallhaven-vpp2g5.png",
+};
+
+const keys = Object.keys(wallpapers)
+
+const randomIndex = Math.floor(Math.random() * keys.length);
+
+const randomKey = keys[randomIndex];
+
+const randomValue = wallpapers[randomKey];
+
+if(localStorage.getItem("selectedWallpaper") === null ){
+  
+  document.getElementById("homeWallpaper").src = randomValue;
+  }
+}
+verifyWallpaper()
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const input = document.getElementById("searchInput").value.trim();
+  if (!input) return;
+
+  let url = input;
+
+  if (!input.startsWith("http://") && !input.startsWith("https://")) {
+    if (input.includes(".")) {
+      url = "https://" + input;
+    } else {
+      url = "https://www.google.com/search?q=" + encodeURIComponent(input);
+    }
+  }
+
+  history.addToHistory(input);
+  window.open(url, "_blank");
+  document.getElementById("searchInput").value = "";
+});
 
 searchInput.addEventListener("input", showAutocomplete);
 searchInput.addEventListener("keydown", handleKeys);
@@ -129,243 +183,68 @@ function renderSection(title, list) {
   });
 }
 
-function refRecent() {
-  if (autocompleteBox.style.display !== "block") {
-    recentHistory.style.display = "flex"; // mostra a div
-  } else {
-    recentHistory.style.display = "none"; // esconde a div
-  }
-}
-setInterval(refRecent, 1500);
-
-
 document.addEventListener("mousemove", (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 20;
-  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  const x = (e.clientX / window.innerWidth - 0.5) * 60;
+  const y = (e.clientY / window.innerHeight - 0.5) * 60;
 
   document.querySelector(
     ".background"
-  ).style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+  ).style.transform = `translate(${x}px, ${y}px) scale(1.1)`;
 });
 
-/* ===========================
-       GOOGLE SEARCH
-=========================== */
-function searchGoogle() {
-  const input = document.getElementById("searchInput").value.trim();
-  if (input === "") return false;
-
-  let url = input;
-
-  // Identifica URL
-  if (!input.startsWith("http://") && !input.startsWith("https://")) {
-    if (input.includes(".")) {
-      url = "https://" + input;
-    } else {
-      url = "https://www.google.com/search?q=" + encodeURIComponent(input);
-    }
-  }
-
-  addToHistory(input);
-  window.open(url, "_blank");
-  document.getElementById("searchInput").value = "";
-  return false;
-}
-
-/* ===========================
-           HISTORY
-=========================== */
-function addToHistory(text) {
-  let history = JSON.parse(localStorage.getItem("recentHistory")) || [];
-
-  const domain = extractDomain(text);
-  const now = Date.now();
-
-  // Remove duplicado
-  history = history.filter((item) => item.text !== text);
-
-  // Adiciona no início
-  history.unshift({
-    text: text,
-    favicon: `https://www.google.com/s2/favicons?sz=64&domain=${domain}`,
-    timestamp: now, // salva a data do acesso
-  });
-
-  // Remove itens com mais de 30 dias (1 mês)
-  const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-  history = history.filter((item) => now - item.timestamp <= THIRTY_DAYS);
-
-  // Salva todo o histórico válido
-  localStorage.setItem("recentHistory", JSON.stringify(history));
-
-  renderHistory();
-}
-
-function extractDomain(text) {
-  if (text.startsWith("http")) {
-    try {
-      return new URL(text).hostname;
-    } catch {
-      return "google.com";
-    }
-  }
-
-  if (text.includes(".")) {
-    return text.replace("www.", "").split("/")[0];
-  }
-
-  return "google.com";
-}
-
-function renderHistory() {
-  const box = document.getElementById("recentHistory");
-  const history = JSON.parse(localStorage.getItem("recentHistory")) || [];
-
-  box.innerHTML = "";
-
-  // Mostra apenas os 8 últimos acessos
-  history.slice(0, 8).forEach((item) => {
-    const div = document.createElement("div");
-    div.className = "history-item";
-    div.onclick = () => openHistoryItem(item.text);
-
-    div.innerHTML = `
-      <img src="${item.favicon}">
-      <span class="history-text">${item.text}</span>
-    `;
-
-    box.appendChild(div);
-  });
-}
-
-function openHistoryItem(text) {
-  let url = text;
-
-  if (!text.startsWith("http")) {
-    if (text.includes(".")) {
-      url = "https://" + text;
-    } else {
-      url = "https://www.google.com/search?q=" + encodeURIComponent(text);
-    }
-  }
-
-  window.open(url, "_blank");
-}
-
+//search input
+search();
 //relogio
-function updateClock() {
-  const now = new Date();
+clock();
+//inicia o clima
+weatherWidget();
 
-  let h = now.getHours().toString().padStart(2, "0");
-  let m = now.getMinutes().toString().padStart(2, "0");
+shortcut();
 
-  const days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
-  const months = [
-    "Jan",
-    "Fev",
-    "Mar",
-    "Abr",
-    "Mai",
-    "Jun",
-    "Jul",
-    "Ago",
-    "Set",
-    "Out",
-    "Nov",
-    "Dez",
-  ];
+document.body.addEventListener("mousemove", refRecent);
 
-  let date = `${days[now.getDay()]}, ${now.getDate()} ${
-    months[now.getMonth()]
-  }`;
+function refRecent() {
+  const autocompleteBox = document.getElementById("autocompleteBox");
+  const recentHistory = document.getElementById("recentHistory");
 
-  document.getElementById("clockTime").textContent = `${h}:${m}`;
-  document.getElementById("clockDate").textContent = date;
+  if (autocompleteBox.style.display !== "block") {
+    recentHistory.style.display = "flex";
+  } else {
+    recentHistory.style.display = "none";
+  }
 }
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+const currentTimeEl = document.getElementById("currentTime");
+const toggleSize = document.getElementById("toggleSize");
+const player = document.getElementById("player");
 
-setInterval(updateClock, 1000);
-updateClock();
-
-//clima
-function loadWeather() {
-  navigator.geolocation.getCurrentPosition(
-    async (pos) => {
-      let lat = pos.coords.latitude;
-      let lon = pos.coords.longitude;
-
-      let url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
-
-      console.log(url)
-
-      let res = await fetch(url);
-      let data = await res.json();
-
-      let temp = data.current_weather.temperature;
-      let wind = data.current_weather.windspeed;
-
-      document.getElementById(
-        "weatherInfo"
-      ).innerHTML = `Temperatura: ${temp}ºC<br>Vento: ${wind} km/h`;
-    },
-    () => {
-      document.getElementById("weatherInfo").innerHTML = "Ative a localização.";
-    }
-  );
-}
-loadWeather();
-
-/* ===========================
-            TODO LIST
-=========================== */
-let todoList = [];
-
-function loadTodos() {
-  let saved = localStorage.getItem("todos");
-  if (saved) todoList = JSON.parse(saved);
-  renderTodos();
-}
-
-function saveTodos() {
-  localStorage.setItem("todos", JSON.stringify(todoList));
-}
-
-function renderTodos() {
-  const div = document.getElementById("todoList");
-  div.innerHTML = "";
-
-  todoList.forEach((task, i) => {
-    div.innerHTML += `
-      <div class="todo-item">
-          <span class="todo-text">${task}</span>
-          <span class="todo-remove" onclick="removeTodo(${i})"><img src="../src/images/close-circle-svgrepo-com.svg" width="25px"></span>
-      </div>
-    `;
-  });
-}
-
-document.getElementById("todoInput").addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    let text = e.target.value.trim();
-    if (text !== "") {
-      todoList.push(text);
-      e.target.value = "";
-      saveTodos();
-      renderTodos();
-    }
+// Play/Pause
+playBtn.addEventListener("click", () => {
+  if (audio.paused) {
+    audio.play();
+    playBtn.textContent = "⏸";
+  } else {
+    audio.pause();
+    playBtn.textContent = "▶";
   }
 });
 
-function removeTodo(i) {
-  todoList.splice(i, 1);
-  saveTodos();
-  renderTodos();
+// Atualizar contador
+audio.addEventListener("timeupdate", () => {
+  currentTimeEl.textContent = formatTime(audio.currentTime);
+});
+
+// Formatar tempo
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60)
+    .toString()
+    .padStart(2, "0");
+  return `${m}:${s}`;
 }
 
-loadTodos();
-
-/* ===========================
-          ON LOAD
-=========================== */
-document.addEventListener("DOMContentLoaded", () => {
-  renderHistory();
-});
+//  Minimizar/Maximizar
+ toggleSize.addEventListener("click", () => {
+   player.classList.toggle("minimized");
+ });

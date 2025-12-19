@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Nova Aba Personalizada",
+  "description": "Abre o site que você escolher quando abrir uma nova aba.",
+  "version": "1.0",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "action": {
+    "default_title": "Configurar nova aba",
+    "default_popup": "options.html"
+  },
+  "options_page": "options.html"
+}

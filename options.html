@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Configurar Nova Aba</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Configurar Nova Aba</h1>
+    <form id="form">
+      <label for="url">URL a abrir na nova aba (inclua http:// ou https://)</label>
+      <input type="url" id="url" placeholder="https://seusite.com" required />
+      <div class="row">
+        <button type="submit" id="save">Salvar</button>
+        <button type="button" id="openNow">Abrir agora</button>
+        <button type="button" id="reset">Reiniciar (remover)</button>
+      </div>
+    </form>
+    <p id="status" aria-live="polite"></p>
+  </main>
+
+  <script src="options.js"></script>
+</body>
+</html>

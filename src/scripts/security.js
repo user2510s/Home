@@ -3,7 +3,7 @@ const input = document.getElementById("passwordInput");
 const errorMsg = document.getElementById("passwordError");
 const btn = document.getElementById("passwordBtn");
 
-const CORRECT_PASSWORD = "1234";
+const CORRECT_PASSWORD = "1346";
 const ONE_HOUR = 60 * 60 * 1000;
 
 function showPopup() {

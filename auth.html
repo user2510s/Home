@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Autenticando...</title>
+</head>
+<body>
+    <p>Processando autenticação...</p>
+
+    <script>
+        // Extrai os dados do hash da URL
+        const hash = window.location.hash
+            .substring(1)
+            .split("&")
+            .reduce((acc, part) => {
+                const [key, value] = part.split("=");
+                acc[key] = value;
+                return acc;
+            }, {});
+
+        if (hash.access_token) {
+            localStorage.setItem("twitch_token", hash.access_token);
+            window.location.href = "index.html";
+        } else {
+            document.body.innerHTML = "<h3>Erro ao autenticar com a Twitch.</h3>";
+        }
+    </script>
+</body>
+</html>

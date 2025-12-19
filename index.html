@@ -4,112 +4,466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="src/styles/styles.css">
+    <link rel="stylesheet" href="src/styles/modalSetings.css">
     <title>HOME</title>
     <link rel="shortcut icon" href="src/images/logo.png" type="image/x-icon">
 </head>
 
 <body>
-    <img class="background" src="./src/images/wallhaven-yqqvv7.jpg">
+    <img class="background" src="" id="homeWallpaper">
 
-    <div class="content">
+    <!--background-->
+    <!---->=
 
-        <form onsubmit="return searchGoogle()">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Pesquise no Google ou digite uma URL"
-                    autocomplete="off">
-            </div>
-        </form>
+    <div class="container">
 
-        <div class="shortcuts">
-
-            <div class="shortcut" onclick="window.open('https://www.youtube.com', '_blank')">
-                <div class="shortcut-icon">
-                    <img src="https://www.svgrepo.com/show/13671/youtube.svg">
+        <div class="content">
+            <form id="searchForm">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Pesquise no Google ou digite uma URL"
+                        autocomplete="off" />
+                    <img src="src/images/google-marketing-platform-svgrepo-com.svg" class="searchIcon" id="search"
+                        alt="search" />
                 </div>
-                <span>YouTube</span>
-            </div>
-            <div class="shortcut" onclick="window.open('https://music.youtube.com/', '_blank')">
-                <div class="shortcut-icon">
-                    <img src="src/images/youtube-music-song-multimedia-audio-svgrepo-com.svg">
-                </div>
-                <span>YouTube Music</span>
-            </div>
+            </form>
 
-            <div class="shortcut" onclick="window.open('https://github.com/user2510s', '_blank')">
-                <div class="shortcut-icon">
-                    <img src="src/images/github.png">
-                </div>
-                <span>GitHub</span>
+            <!-- shortcuts -->
+
+            <div class="shortcuts" id="shortcutsContainer"></div>
+
+            <div class="shortcut add-button" id="addShortcutBtn">
+                <img src="icons/edit-3-svgrepo-com.svg" alt="add" style="width: 20px;">
             </div>
 
-            <div class="shortcut" onclick="window.open('https://chat.openai.com', '_blank')">
-                <div class="shortcut-icon">
-                    <img src="src/images/chatgpt.png">
-                </div>
-                <span>ChatGPT</span>
+            <!-- MENU DE CONTEXTO -->
+
+        </div>
+
+        <!-- widgets -->
+
+        <div class="widgets-container">
+
+            <div class="clock" id="clockcontainer">
+                <div class="clock-time" id="clockTime">00:00</div>
+                <div class="clock-date" id="clockDate" style="display: none;">Carregando...</div>
             </div>
 
-            <div class="shortcut" onclick="window.open('https://www.google.com', '_blank')">
-                <div class="shortcut-icon">
-                    <img src="src/images/google.png">
-                </div>
-                <span>Google</span>
+            <div class="weather" id="weatherBox">
+                <div class="weather-info" id="weatherInfo">Carregando...</div>
             </div>
-            <div class="shortcut" onclick="window.open('https://web.whatsapp.com/', '_blank')">
-                <div class="shortcut-icon">
-                    <img src="src/images/whatsapp.png">
-                </div>
-                <span>Whatsapp</span>
+
+        </div>
+
+        <div class="autocomplete-box" id="autocompleteBox"></div>
+
+        <div id="recentHistory" class="recent-history" id="recentHistory"></div>
+
+        <div id="overlay" class="overlay">
+
+            <div class="popup">
+                <h2>Autenticação necessária</h2>
+                <input type="password" id="passwordInput" placeholder="Digite a senha">
+                <button id="passwordBtn">Entrar</button>
+                <p id="passwordError" class="error"></p>
             </div>
 
         </div>
 
     </div>
-    <div class="widgets-container">
 
-        <div class="clock">
-            <div class="clock-time" id="clockTime">00:00</div>
-            <div class="clock-date" id="clockDate">Carregando...</div>
+    <!-- Modal -->
+
+    <div id="shortcutModal" class="modal">
+
+        <div class="modal-content">
+            <h3 id="modalTitle">Adicionar Atalho</h3>
+
+            <input id="siteName" type="text" placeholder="Nome do site" autocomplete="off">
+            <input id="siteUrl" type="text" placeholder="URL (https://...)" autocomplete="off">
+
+            <button id="saveShortcut">Salvar</button>
+            <button id="closeModal">Cancelar</button>
         </div>
-
-        <div class="weather" id="weatherBox">
-            <h3>Clima</h3>
-            <div class="weather-info" id="weatherInfo">Carregando...</div>
-        </div>
-
-        <div class="todo-box">
-            <h3>Minhas Tarefas</h3>
-
-            <input type="text" id="todoInput" placeholder="Nova tarefa...">
-
-            <div id="todoList"></div>
-        </div>
-
 
     </div>
-    <div class="autocomplete-box" id="autocompleteBox"></div>
 
-    <div id="recentHistory" class="recent-history" id="recentHistory"></div>
-
-    <div id="overlay" class="overlay">
-        <div class="popup">
-            <h2>Autenticação necessária</h2>
-            <input type="password" id="passwordInput" placeholder="Digite a senha">
-            <button id="passwordBtn">Entrar</button>
-            <p id="passwordError" class="error"></p>
-        </div>
-    </div>
 
 
 
     <div id="liveIconsContainer"></div>
 
+    </div>
+
+    <div id="contextMenu" class="context-menu">
+
+        <div id="ctxEdit">Editar</div>
+        <div id="ctxDelete">Excluir</div>
+
+    </div>
+
+    <div class="music-widget minimized" id="player">
+
+        <img class="cover" src="https://i.pinimg.com/originals/8d/df/a8/8ddfa888e1191436592c00c7ed700844.gif"
+            alt="cover">
+
+        <button id="toggleSize" class="minimize-btn">—</button>
+
+        <div class="info">
+            <h3 class="title">Plaza Music</h3>
+            <p class="artist">plaza.one</p>
+        </div>
+
+        <button id="playBtn" class="play-btn">▶</button>
+
+        <div class="time-box">
+            <span id="currentTime">0:00</span>
+        </div>
+
+        <audio id="audio" src="https://radio.plaza.one/mp3_low"></audio>
+
+    </div>
+
+    <div class="configs" id="abrirModal">
+
+        <img src="https://i.pinimg.com/736x/77/0d/3c/770d3c60c46a7e2ebfe9c273e5194df5.jpg" alt="settings"
+            style="width: 45px; border-radius: 50%;" id="openModalIcon">
+
+    </div>
+
+    <div class="modalSetings" id="conteudo">
+
+        <div class="containerSet">
+            <img class="ClienteTwitchImg" src="https://i.pinimg.com/736x/77/0d/3c/770d3c60c46a7e2ebfe9c273e5194df5.jpg"
+                alt="te" id="containerIconProfile">
+            <div class="setWallpaper">
+                <img data-lazy data-src="src/images/wallhaven-5yd6d5.png" alt="BG1">
+                <img data-lazy data-src="src/images/background.png" alt="BG2">
+                <img data-lazy data-src="src/images/wallhaven-yqqvv7.jpg" alt="BG3">
+                <img data-lazy data-src="src/images/wallpaper2.png" alt="BG4">
+                <img data-lazy data-src="https://w.wallhaven.cc/full/vp/wallhaven-vpp2g5.png" alt="BG5">
+                <img data-lazy data-src="https://w.wallhaven.cc/full/w5/wallhaven-w557rr.jpg" alt="BG6">
+                <img data-lazy data-src="https://w.wallhaven.cc/full/k8/wallhaven-k881zd.jpg" alt="BG7">
+                <img data-lazy data-src="https://w.wallhaven.cc/full/w5/wallhaven-w5eq57.jpg" alt="BG8">
+            </div>
 
 
-    <script src="src/scripts/tw.js"></script>
-    <script src="src/scripts/script.js"></script>
+            <div class="section">
+                <input type="checkbox" id="checkboxInput">
+                <label for="checkboxInput" class="toggleSwitch"></label>
+                <p>Relogio Visivel</p>
+            </div>
+            <div class="section">
+                <input type="checkbox" id="checkboxInput2">
+                <label for="checkboxInput2" class="toggleSwitch"></label>
+                <p>Widget de Tempo</p>
+            </div>
+            <div class="section">
+                <input type="checkbox" id="checkboxInput3">
+                <label for="checkboxInput3" class="toggleSwitch"></label>
+                <p>Payer de musica</p>
+            </div>
+            <div class="section">
+                <input type="checkbox" id="checkboxInput4">
+                <label for="checkboxInput4" class="toggleSwitch"></label>
+                <p>Twitch Inscritos</p>
+            </div>
+            <div class="modalSetingsCLose" id="botao">
+                <p>ok</p>
+            </div>
+            <!-- From Uiverse.io by DarthKarim -->
+            <a href="#" class="playstore-button">
+                <svg viewBox="0 -28.5 256 256" class="icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z">
+                    </path>
+                </svg>
+                <span class="texts">
+                    <span class="text-1">JOIN THE</span>
+                    <span class="text-2">DISCORD</span>
+                </span>
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+    <button id="loginBtn" style="display: none;">Login com Twitch</button>
+
+    <script type="module" src="src/scripts/script.js"></script>
+    <script type="module" src="src/scripts/twitch/twitch.js"></script>
     <script src="src/scripts/security.js"></script>
+    <script>
+        /* Configuração para lazy-load universal */
+        const lazyElements = document.querySelectorAll("[data-lazy]");
+
+        /* Observer */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const el = entry.target;
+
+                if (entry.isIntersecting) {
+                    // MONTAR quando fica visível
+                    if (!el.dataset.loaded) {
+                        mountElement(el);
+                        el.dataset.loaded = "true";
+                    }
+                } else {
+                    // DESCARREGAR quando fica invisível
+                    if (el.dataset.loaded) {
+                        unmountElement(el);
+                        el.dataset.loaded = "";
+                    }
+                }
+            });
+        }, {
+            threshold: 0.10
+        });
+
+        /* Ativa o observer */
+        lazyElements.forEach(el => observer.observe(el));
+
+
+        /* ----------------------
+           Função de MONTAGEM
+           ---------------------- */
+        function mountElement(el) {
+
+            // Caso seja uma imagem
+            if (el.dataset.src) {
+                el.src = el.dataset.src;
+            }
+
+            // Caso seja um iframe
+            if (el.tagName === "IFRAME" && el.dataset.src) {
+                el.src = el.dataset.src;
+            }
+
+            // Se for HTML dinâmico pesado
+            if (el.dataset.html) {
+                el.innerHTML = el.dataset.html;
+            }
+
+            // Se tiver script embutido
+            if (el.dataset.script) {
+                const fn = new Function(el.dataset.script);
+                fn();
+            }
+        }
+
+
+        /* ----------------------
+           Função de DESCARREGAR
+           ---------------------- */
+        function unmountElement(el) {
+
+            // Remove src para liberar memória
+            if (el.dataset.src) {
+                el.removeAttribute("src");
+            }
+
+            // Apaga HTML gerado dinamicamente
+            if (el.dataset.html) {
+                el.innerHTML = "";
+            }
+
+            // Se tiver script de limpeza
+            if (el.dataset.cleanup) {
+                const fn = new Function(el.dataset.cleanup);
+                fn();
+            }
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const bgElement = document.querySelector(".background");
+            const wallpapers = document.querySelectorAll(".setWallpaper img");
+
+            // 1. Carregar background salvo no localStorage
+            const savedBG = localStorage.getItem("selectedWallpaper");
+            if (savedBG) {
+                bgElement.src = savedBG;
+            }
+
+            // 2. Evento de clique para trocar o background
+            wallpapers.forEach(img => {
+                img.addEventListener("click", () => {
+                    const newBG = img.getAttribute("data-src");
+
+                    // Troca o background principal
+                    bgElement.src = newBG;
+
+                    // Salva no localStorage
+                    localStorage.setItem("selectedWallpaper", newBG);
+                });
+            });
+        });
+        const modal = document.getElementById("conteudo");
+        const botaoFechar = document.getElementById("botao");
+
+        // Guarda as imagens internas do modal
+        const modalImages = modal.querySelectorAll("img[data-src]");
+
+        // Função para descarregar imagens
+        function unloadImages() {
+            modalImages.forEach(img => {
+                img.removeAttribute("src"); // remove a imagem da memória
+            });
+        }
+
+        // Função para recarregar imagens
+        function reloadImages() {
+            modalImages.forEach(img => {
+                const original = img.getAttribute("data-src");
+                img.src = original;
+            });
+        }
+
+        // FECHAR MODAL
+        botaoFechar.addEventListener("click", () => {
+            unloadImages();          // descarrega as imagens
+            modal.style.display = "none";
+        });
+
+        // ABRIR MODAL  (se você tiver um botão para abrir)
+        const abrir = document.getElementById("abrirModal"); // coloque seu botão aqui
+
+        if (abrir) {
+            abrir.addEventListener("click", () => {
+                modal.style.display = "flex";  // ou block, conforme seu layout
+                reloadImages();                // recarrega quando abrir
+            });
+        }
+
+        document.getElementById("abrirModal").addEventListener("click", () => {
+            modal.style.display = "flex"; // ou "block", dependendo do seu CSS
+        });
+
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const checkbox = document.getElementById("checkboxInput");
+            const clockContainer = document.getElementById("clockcontainer");
+
+            // Recupera estado salvo
+            const savedState = localStorage.getItem("clockVisible");
+
+            if (savedState === "true") {
+                checkbox.checked = true;
+                clockContainer.style.display = "block";
+            } else {
+                clockContainer.style.display = "none";
+            }
+
+            // Escuta mudança no checkbox
+            checkbox.addEventListener("change", () => {
+                if (checkbox.checked) {
+                    clockContainer.style.display = "block";
+                    localStorage.setItem("clockVisible", "true");
+                } else {
+                    clockContainer.style.display = "none";
+                    localStorage.setItem("clockVisible", "false");
+                }
+            });
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const checkbox = document.getElementById("checkboxInput3");
+            const clockContainer = document.getElementById("player");
+
+            // Recupera estado salvo
+            const savedState = localStorage.getItem("playerVisible");
+
+            if (savedState === "true") {
+                checkbox.checked = true;
+                clockContainer.style.display = "";
+            } else {
+                clockContainer.style.display = "none";
+            }
+
+            // Escuta mudança no checkbox
+            checkbox.addEventListener("change", () => {
+                if (checkbox.checked) {
+                    clockContainer.style.display = "";
+                    localStorage.setItem("playerVisible", "true");
+                } else {
+                    clockContainer.style.display = "none";
+                    localStorage.setItem("playerVisible", "false");
+                }
+            });
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const checkbox = document.getElementById("checkboxInput4");
+            const clockContainer = document.getElementById("liveIconsContainer");
+
+            // Recupera estado salvo
+            const savedState = localStorage.getItem("liveVisible");
+
+            if (savedState === "true") {
+                checkbox.checked = true;
+                clockContainer.style.display = "";
+            } else {
+                clockContainer.style.display = "none";
+            }
+
+            // Escuta mudança no checkbox
+            checkbox.addEventListener("change", () => {
+                if (checkbox.checked) {
+                    clockContainer.style.display = "flex";
+                    localStorage.setItem("liveVisible", "true");
+                } else {
+                    clockContainer.style.display = "none";
+                    localStorage.setItem("liveVisible", "false");
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const checkbox = document.getElementById("checkboxInput2");
+            const weatherContainer = document.getElementById("weatherBox");
+
+            // Recupera estado salvo
+            const savedState = localStorage.getItem("weatherBoxVisible");
+
+            if (savedState === "true") {
+                checkbox.checked = true;
+                weatherContainer.style.display = "block";
+            } else {
+                weatherContainer.style.display = "none";
+            }
+
+            // Escuta mudança no checkbox
+            checkbox.addEventListener("change", () => {
+                if (checkbox.checked) {
+                    weatherContainer.style.display = "block";
+                    localStorage.setItem("weatherBoxVisible", "true");
+                } else {
+                    weatherContainer.style.display = "none";
+                    localStorage.setItem("weatherBoxVisible", "false");
+                }
+            });
+        });
+
+        const loadUserIcon = localStorage.getItem("iconTwitch");
+        const UserDefaltIcon = "https://i.pinimg.com/736x/77/0d/3c/770d3c60c46a7e2ebfe9c273e5194df5.jpg"
+        function loadedUserIconTw() {
+            if (loadUserIcon != null) {
+                openModalIcon.src = loadUserIcon
+                containerIconProfile.src = loadUserIcon
+                return
+            }
+
+            openModalIcon.src = UserDefaltIcons
+            containerIconProfile.src = UserDefaltIcon
+
+        }
+        loadedUserIconTw()
+
+
+    </script>
+
 
 </body>
 
